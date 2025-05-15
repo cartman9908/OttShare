@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
 import seohan.ottshare.entity.SharingUser;
 import seohan.ottshare.repository.SharingUserRepository;
@@ -21,12 +20,17 @@ public class SharingUserService {
 
     @Transactional
     public List<SharingUser> prepareSharingUserList(List<WaitingUserResponse> waitingUserResponse) {
-            List<SharingUser> sharingUsers = waitingUserResponse.stream()
+            return waitingUserResponse.stream()
                     .map(SharingUser::from)
                     .toList();
+    }
 
-        sharingUsers.forEach(sharingUser -> sharingUser.getUser().markAsSharingRoom());
+    @Transactional
+    public void updateShareRoomStatus(List<SharingUser> sharingUser) {
+        List<SharingUser> sharingUsers = sharingUserRepository.findByIds(
+                sharingUser.stream().map(SharingUser::getId).toList()
+        );
 
-        return sharingUsers;
+        sharingUsers.forEach(members -> members.getUser().markAsSharingRoom());
     }
 }

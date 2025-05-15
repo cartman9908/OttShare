@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomRequest;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
-import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
+
 import seohan.ottshare.dto.waitingUserDto.IsLeaderAndOttResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserReq;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
@@ -85,11 +85,14 @@ public class WaitingUserApiController {
 
         List<SharingUser> sharingUsers = sharingUserService.prepareSharingUserList(members);
 
+
         String ottId = leader.getOttId();
         String ottPassword = leader.getOttPassword();
 
         OttShareRoomRequest ottShareRoomRequest = new OttShareRoomRequest(sharingUsers, leader.getOttType(), ottId, ottPassword);
 
         OttShareRoomResponse ottShareRoomResponse = ottShareRoomService.createOttShareRoom(ottShareRoomRequest);
+
+        sharingUserService.updateShareRoomStatus(sharingUsers);
     }
 }
