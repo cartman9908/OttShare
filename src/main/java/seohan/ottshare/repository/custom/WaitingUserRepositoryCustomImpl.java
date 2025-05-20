@@ -12,6 +12,7 @@ import java.util.Optional;
 import static seohan.ottshare.entity.QUser.user;
 import static seohan.ottshare.entity.QWaitingUser.waitingUser;
 
+
 @Repository
 @RequiredArgsConstructor
 public class WaitingUserRepositoryCustomImpl implements WaitingUserRepositoryCustom {

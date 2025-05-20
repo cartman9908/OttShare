@@ -12,6 +12,7 @@ import seohan.ottshare.repository.OttShareRoomRepository;
 import seohan.ottshare.repository.SharingUserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class SharingUserService {
     public List<SharingUser> prepareSharingUserList(List<WaitingUserResponse> waitingUserResponse) {
             return waitingUserResponse.stream()
                     .map(SharingUser::from)
-                    .toList();
+                    .collect(Collectors.toList());
     }
 
     @Transactional

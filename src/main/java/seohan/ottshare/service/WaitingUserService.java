@@ -17,6 +17,7 @@ import seohan.ottshare.repository.WaitingUserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -103,7 +104,7 @@ public class WaitingUserService {
 
         return waitingUsers.stream()
                 .map(WaitingUserResponse::from)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
