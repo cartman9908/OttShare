@@ -30,6 +30,7 @@ public class WaitingUserResponse {
                 .user(waitingUser.getUser())
                 .ottId(waitingUser.getOttId())
                 .ottPassword(waitingUser.getOttPassword())
+                .ottType(waitingUser.getOtt())
                 .isLeader(waitingUser.isLeader())
                 .build();
     }

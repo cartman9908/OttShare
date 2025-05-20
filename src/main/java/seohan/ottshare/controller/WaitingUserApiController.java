@@ -87,6 +87,7 @@ public class WaitingUserApiController {
         String ottId = leader.getOttId();
         String ottPassword = leader.getOttPassword();
 
+        log.info("leader.getOttType(): {}", leader.getOttType());
         OttShareRoomRequest ottShareRoomRequest = new OttShareRoomRequest(sharingUsers, leader.getOttType(), ottId, ottPassword);
 
         OttShareRoomResponse ottShareRoomResponse = ottShareRoomService.createOttShareRoom(ottShareRoomRequest);
