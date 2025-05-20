@@ -10,6 +10,8 @@ import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
 import seohan.ottshare.entity.User;
 import seohan.ottshare.entity.WaitingUser;
 import seohan.ottshare.enums.OttType;
+import seohan.ottshare.exception.NotOttLeaderException;
+import seohan.ottshare.exception.OttLeaderNotFoundException;
 import seohan.ottshare.repository.UserRepository;
 import seohan.ottshare.repository.WaitingUserRepository;
 
@@ -72,7 +74,7 @@ public class WaitingUserService {
      */
     public WaitingUserResponse getLeaderByOtt(OttType ott) {
         WaitingUser waitingUser = waitingUserRepository.findLeaderByOtt(ott)
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new OttLeaderNotFoundException(ott));
 
         return WaitingUserResponse.from(waitingUser);
     }
@@ -93,10 +95,10 @@ public class WaitingUserService {
      */
     public List<WaitingUserResponse> getNoneLeaderByOtt(OttType ott) {
         int userCount = getNoneLeaderUserCount(ott);
-        List<WaitingUser> waitingUsers = waitingUserRepository. findNoneLeaderByOtt(ott, userCount);
+        List<WaitingUser> waitingUsers = waitingUserRepository.findNoneLeaderByOtt(ott, userCount);
 
         if (waitingUsers.size() < userCount) {
-            throw new IllegalStateException("필요한 인원이 부족합니다.");
+            throw new NotOttLeaderException(ott);
         }
 
         return waitingUsers.stream()

@@ -15,7 +15,6 @@ public class SharingUserRepositoryCustomImpl implements SharingUserRepositoryCus
 
     private final JPAQueryFactory queryFactory;
 
-
     @Override
     public List<SharingUser> findByIds(List<Long> sharingUserIds) {
         return queryFactory

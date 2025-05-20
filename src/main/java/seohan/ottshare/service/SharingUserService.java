@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
+import seohan.ottshare.entity.OttShareRoom;
 import seohan.ottshare.entity.SharingUser;
+import seohan.ottshare.repository.OttShareRoomRepository;
 import seohan.ottshare.repository.SharingUserRepository;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.List;
 public class SharingUserService {
 
     private final SharingUserRepository sharingUserRepository;
+    private final OttShareRoomRepository ottShareRoomRepository;
 
     @Transactional
     public List<SharingUser> prepareSharingUserList(List<WaitingUserResponse> waitingUserResponse) {
@@ -32,5 +36,13 @@ public class SharingUserService {
         );
 
         sharingUsers.forEach(members -> members.getUser().markAsSharingRoom());
+    }
+
+    @Transactional
+    public void assignRoomToSharingUsers(List<SharingUser> sharingUsers, OttShareRoomResponse ottShareRoomResponse) {
+        OttShareRoom room = ottShareRoomRepository.findById(ottShareRoomResponse.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + ottShareRoomResponse.getId()));
+        // 엔티티 기준으로 연관관계 설정
+        sharingUsers.forEach(room::addSharingUser);
     }
 }

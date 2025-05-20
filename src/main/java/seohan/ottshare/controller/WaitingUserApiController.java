@@ -37,6 +37,7 @@ public class WaitingUserApiController {
     public ResponseEntity<String> createWaitingUser(@RequestBody WaitingUserReq waitingUserReq) {
         log.info("Save waiting user: {}", waitingUserReq.getUserInfo().getUsername());
         waitingUserService.createWaitingUser(waitingUserReq);
+        createRoom(waitingUserReq);
 
         return ResponseEntity.ok("");
     }
@@ -81,10 +82,7 @@ public class WaitingUserApiController {
 
         members.add(leader);
 
-//        waitingUserService.deleteUsers(members);
-
         List<SharingUser> sharingUsers = sharingUserService.prepareSharingUserList(members);
-
 
         String ottId = leader.getOttId();
         String ottPassword = leader.getOttPassword();
@@ -93,6 +91,9 @@ public class WaitingUserApiController {
 
         OttShareRoomResponse ottShareRoomResponse = ottShareRoomService.createOttShareRoom(ottShareRoomRequest);
 
+        waitingUserService.deleteUsers(members);
         sharingUserService.updateShareRoomStatus(sharingUsers);
+
+        sharingUserService.assignRoomToSharingUsers(sharingUsers,ottShareRoomResponse);
     }
 }

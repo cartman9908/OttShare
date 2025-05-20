@@ -24,9 +24,11 @@ public class OttShareRoom extends BaseTimeEntity{
     @Column(name = "ott_share_room_id")
     private Long id;
 
+    @Builder.Default
     @OneToMany(mappedBy = "ottShareRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SharingUser> sharingUsers = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "ottShareRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
@@ -47,5 +49,10 @@ public class OttShareRoom extends BaseTimeEntity{
                 .ottId(ottShareRoomRequest.getOttId())
                 .ottPassword(ottShareRoomRequest.getOttPassword())
                 .build();
+    }
+
+    public void addSharingUser(SharingUser sharingUser) {
+        this.sharingUsers.add(sharingUser);
+        sharingUser.changeOttShareRoom(this); // 양방향 설정
     }
 }

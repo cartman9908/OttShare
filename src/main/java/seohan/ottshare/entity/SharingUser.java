@@ -48,4 +48,8 @@ public class SharingUser extends BaseTimeEntity{
                 .ottShareRoom(null)
                 .build();
     }
+
+    public void changeOttShareRoom(OttShareRoom ottShareRoom) {
+        this.ottShareRoom = ottShareRoom;
+    }
 }

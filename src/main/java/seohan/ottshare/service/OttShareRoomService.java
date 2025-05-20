@@ -20,9 +20,9 @@ public class OttShareRoomService {
     /**
      * ott 공유방 생성
      */
+    @Transactional
     public OttShareRoomResponse createOttShareRoom(OttShareRoomRequest ottShareRoomRequest) {
         OttShareRoom room = OttShareRoom.from(ottShareRoomRequest);
-        log.info("Saved OttShareRoom Id: {}", room.getId());
         return OttShareRoomResponse.from(ottShareRoomRepository.save(room));
     }
 
