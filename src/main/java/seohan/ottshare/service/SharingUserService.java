@@ -33,7 +33,7 @@ public class SharingUserService {
     @Transactional
     public void updateShareRoomStatus(List<SharingUser> sharingUser) {
         List<SharingUser> sharingUsers = sharingUserRepository.findByIds(
-                sharingUser.stream().map(SharingUser::getId).toList()
+                sharingUser.stream().map(SharingUser::getId).collect(Collectors.toList())
         );
 
         sharingUsers.forEach(members -> members.getUser().markAsSharingRoom());
@@ -43,7 +43,7 @@ public class SharingUserService {
     public void assignRoomToSharingUsers(List<SharingUser> sharingUsers, OttShareRoomResponse ottShareRoomResponse) {
         OttShareRoom room = ottShareRoomRepository.findById(ottShareRoomResponse.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + ottShareRoomResponse.getId()));
-        // 엔티티 기준으로 연관관계 설정
-        sharingUsers.forEach(room::addSharingUser);
+
+        sharingUsers.forEach(sharingUser -> sharingUser.changeOttShareRoom(room));
     }
 }

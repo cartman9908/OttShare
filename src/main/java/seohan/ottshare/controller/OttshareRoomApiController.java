@@ -1,8 +1,11 @@
 package seohan.ottshare.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class OttshareRoomApiController {
     /**
      * 채팅방
@@ -19,7 +22,6 @@ public class OttshareRoomApiController {
     /**
      * 체크
      */
-
 
     /**
      * 아이디, 비밀번호 확인

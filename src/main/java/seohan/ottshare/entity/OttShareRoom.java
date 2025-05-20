@@ -50,9 +50,4 @@ public class OttShareRoom extends BaseTimeEntity{
                 .ottPassword(ottShareRoomRequest.getOttPassword())
                 .build();
     }
-
-    public void addSharingUser(SharingUser sharingUser) {
-        this.sharingUsers.add(sharingUser);
-        sharingUser.changeOttShareRoom(this); // 양방향 설정
-    }
 }

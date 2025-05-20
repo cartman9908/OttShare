@@ -1,6 +1,7 @@
 package seohan.ottshare.dto.ottShareRoomDto;
 
 import lombok.*;
+import seohan.ottshare.dto.sharingUserDto.SharingUserInRoomResponse;
 import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.entity.Message;
 import seohan.ottshare.entity.OttShareRoom;
@@ -8,6 +9,7 @@ import seohan.ottshare.enums.OttType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class OttShareRoomResponse {
 
     private Long id;
 
-    private List<SharingUserResponse> sharingUsers = new ArrayList<>();
+    private List<SharingUserInRoomResponse> sharingUserInRoomResponses = new ArrayList<>();
 
     private List<Message> messages = new ArrayList<>();
 
@@ -30,9 +32,9 @@ public class OttShareRoomResponse {
     public static OttShareRoomResponse from(OttShareRoom ottShareRoom) {
         return OttShareRoomResponse.builder()
                 .id(ottShareRoom.getId())
-                .sharingUsers(ottShareRoom.getSharingUsers().stream()
-                        .map(SharingUserResponse::from)
-                        .toList())
+                .sharingUserInRoomResponses(ottShareRoom.getSharingUsers().stream()
+                        .map(SharingUserInRoomResponse::from)
+                        .collect(Collectors.toList()))
                 .ottType(ottShareRoom.getOtt())
                 .ottId(ottShareRoom.getOttId())
                 .ottPassword(ottShareRoom.getOttPassword())

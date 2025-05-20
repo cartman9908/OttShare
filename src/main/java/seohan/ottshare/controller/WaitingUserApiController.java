@@ -39,7 +39,7 @@ public class WaitingUserApiController {
         waitingUserService.createWaitingUser(waitingUserReq);
         createRoom(waitingUserReq);
 
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Room created successfully.");
     }
 
     /**
@@ -76,6 +76,10 @@ public class WaitingUserApiController {
         return ResponseEntity.ok(isLeaderAndOttResponse);
     }
 
+    /**
+     * 방 생성 메소드
+     */
+    //개선해야함(방을 만들기 전에 연관관계 설정 후 save 하는 방식으로 수정해야함)
     private void createRoom(WaitingUserReq waitingUserReq) {
         WaitingUserResponse leader = waitingUserService.getLeaderByOtt(waitingUserReq.getOttType());
         List<WaitingUserResponse> members = waitingUserService.getNoneLeaderByOtt(waitingUserReq.getOttType());
@@ -87,14 +91,15 @@ public class WaitingUserApiController {
         String ottId = leader.getOttId();
         String ottPassword = leader.getOttPassword();
 
-        log.info("leader.getOttType(): {}", leader.getOttType());
+        log.info("OttType: {}", leader.getOttType());
         OttShareRoomRequest ottShareRoomRequest = new OttShareRoomRequest(sharingUsers, leader.getOttType(), ottId, ottPassword);
 
         OttShareRoomResponse ottShareRoomResponse = ottShareRoomService.createOttShareRoom(ottShareRoomRequest);
 
+        sharingUserService.assignRoomToSharingUsers(sharingUsers,ottShareRoomResponse);
+        log.info("Room created successfully for OTT service: {}", ottShareRoomResponse.getId());
+
         waitingUserService.deleteUsers(members);
         sharingUserService.updateShareRoomStatus(sharingUsers);
-
-        sharingUserService.assignRoomToSharingUsers(sharingUsers,ottShareRoomResponse);
     }
 }

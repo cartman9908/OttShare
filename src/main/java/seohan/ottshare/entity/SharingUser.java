@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import seohan.ottshare.dto.userDto.UserResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
 
 import java.util.ArrayList;
