@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomRequest;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
+import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.entity.OttShareRoom;
+import seohan.ottshare.entity.SharingUser;
 import seohan.ottshare.repository.OttShareRoomRepository;
+import seohan.ottshare.repository.SharingUserRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,6 +19,7 @@ import seohan.ottshare.repository.OttShareRoomRepository;
 public class OttShareRoomService {
 
     private final OttShareRoomRepository ottShareRoomRepository;
+    private final SharingUserRepository sharingUserRepository;
 
     /**
      * ott 공유방 생성
@@ -34,6 +38,16 @@ public class OttShareRoomService {
     /**
      * ott 공유방 강제퇴장
      */
+    @Transactional
+    public void kickFromRoom(Long roomId, Long userId){
+        SharingUser sharingUser = sharingUserRepository.findByRoomIdAndUserId(roomId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("공유방에 해당 유저가 존재하지 않습니다."));
+
+        OttShareRoom ottShareRoom = sharingUser.getOttShareRoom();
+
+        ottShareRoom.removeSharingUser(sharingUser);
+        sharingUser.getUser().kickShareRoom();
+    }
 
     /**
      * 체크 기능

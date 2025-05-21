@@ -51,4 +51,8 @@ public class SharingUser extends BaseTimeEntity{
     public void changeOttShareRoom(OttShareRoom ottShareRoom) {
         this.ottShareRoom = ottShareRoom;
     }
+
+    public void removeRoom() {
+        this.ottShareRoom = null;
+    }
 }

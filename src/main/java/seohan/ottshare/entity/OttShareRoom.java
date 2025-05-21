@@ -50,4 +50,9 @@ public class OttShareRoom extends BaseTimeEntity{
                 .ottPassword(ottShareRoomRequest.getOttPassword())
                 .build();
     }
+
+    public void removeSharingUser(SharingUser sharingUser) {
+        this.sharingUsers.remove(sharingUser);
+        sharingUser.removeRoom();
+    }
 }
