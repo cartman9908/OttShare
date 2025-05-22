@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomRequest;
+import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
 import seohan.ottshare.enums.OttType;
 
 import java.util.ArrayList;
@@ -48,6 +49,15 @@ public class OttShareRoom extends BaseTimeEntity{
                 .ott(ottShareRoomRequest.getOttType())
                 .ottId(ottShareRoomRequest.getOttId())
                 .ottPassword(ottShareRoomRequest.getOttPassword())
+                .build();
+    }
+
+    public static OttShareRoom from(OttShareRoomResponse ottShareRoomResponse) {
+        return OttShareRoom.builder()
+                .id(ottShareRoomResponse.getId())
+                .ott(ottShareRoomResponse.getOttType())
+                .ottId(ottShareRoomResponse.getOttId())
+                .ottPassword(ottShareRoomResponse.getOttPassword())
                 .build();
     }
 

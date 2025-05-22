@@ -2,7 +2,6 @@ package seohan.ottshare.dto.ottShareRoomDto;
 
 import lombok.*;
 import seohan.ottshare.dto.sharingUserDto.SharingUserInRoomResponse;
-import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.entity.Message;
 import seohan.ottshare.entity.OttShareRoom;
 import seohan.ottshare.enums.OttType;

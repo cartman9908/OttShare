@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import seohan.ottshare.dto.sharingUserDto.SharingUserInRoomResponse;
+import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
 
 import java.util.ArrayList;
@@ -45,6 +47,16 @@ public class SharingUser extends BaseTimeEntity{
                 .user(waitingUserResponse.getUser())
                 .isLeader(waitingUserResponse.isLeader())
                 .ottShareRoom(null)
+                .build();
+    }
+
+    public static SharingUser from(SharingUserResponse response) {
+        return SharingUser.builder()
+                .id(response.getId())
+                .user(User.from(response.getUser()))
+                .ottShareRoom(OttShareRoom.from(response.getOttShareRoom()))
+                .isLeader(response.isLeader())
+                .isChecked(response.isChecked())
                 .build();
     }
 

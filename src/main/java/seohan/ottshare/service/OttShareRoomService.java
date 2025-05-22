@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomIdAndPasswordResponse;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomRequest;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
+import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.entity.OttShareRoom;
 import seohan.ottshare.entity.SharingUser;
 import seohan.ottshare.exception.NotFoundSharingUserForRoom;
