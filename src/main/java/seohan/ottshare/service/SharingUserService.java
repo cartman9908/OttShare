@@ -47,4 +47,11 @@ public class SharingUserService {
 
         sharingUsers.forEach(sharingUser -> sharingUser.changeOttShareRoom(room));
     }
+
+    public SharingUserResponse getSharingUser(Long userId) {
+        SharingUser sharingUser = sharingUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException(""));
+
+        return SharingUserResponse.from(sharingUser);
+    }
 }

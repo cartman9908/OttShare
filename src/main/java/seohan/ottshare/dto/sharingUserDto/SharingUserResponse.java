@@ -21,7 +21,7 @@ public class SharingUserResponse {
 
     private boolean isChecked;
 
-    public SharingUserResponse from(SharingUser sharingUser) {
+    public static SharingUserResponse from(SharingUser sharingUser) {
         return SharingUserResponse.builder()
                 .id(sharingUser.getId())
                 .user(UserResponse.from(sharingUser.getUser()))

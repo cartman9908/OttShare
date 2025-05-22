@@ -55,4 +55,8 @@ public class SharingUser extends BaseTimeEntity{
     public void removeRoom() {
         this.ottShareRoom = null;
     }
+
+    public void setChecked() {
+        this.isChecked = true;
+    }
 }

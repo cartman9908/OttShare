@@ -10,4 +10,6 @@ public interface SharingUserRepositoryCustom {
     List<SharingUser> findByIds(List<Long> sharingUserIds);
 
     Optional<SharingUser> findByRoomIdAndUserId(Long roomId, Long userId);
+
+    Optional<SharingUser> findByUserId(Long userId);
 }

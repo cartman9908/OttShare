@@ -35,4 +35,13 @@ public class SharingUserRepositoryCustomImpl implements SharingUserRepositoryCus
                 .fetchOne()
         );
     }
+
+    @Override
+    public Optional<SharingUser> findByUserId(Long userId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(sharingUser)
+                .where(sharingUser.user.id.eq(userId))
+                .fetchOne()
+        );
+    }
 }
