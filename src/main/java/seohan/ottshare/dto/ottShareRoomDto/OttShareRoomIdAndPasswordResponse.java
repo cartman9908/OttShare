@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @Builder
 public class OttShareRoomIdAndPasswordResponse {
-
     private String ottId;
 
     private String ottPassword;

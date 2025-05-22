@@ -50,14 +50,10 @@ public class OttShareRoomService {
         SharingUser sharingUser = sharingUserRepository.findByRoomIdAndUserId(roomId, userId)
                 .orElseThrow(() -> new NotFoundSharingUserForRoom(roomId, userId));
 
+        sharingUser.getUser().kickShareRoom();
         OttShareRoom ottShareRoom = sharingUser.getOttShareRoom();
 
-        boolean isManaged = entityManager.contains(sharingUser);
-        log.info("SharingUser is managed (영속 상태): {}", isManaged);
-
         ottShareRoom.removeSharingUser(sharingUser);
-        sharingUser.getUser().kickShareRoom();
-        sharingUserRepository.delete(sharingUser);
     }
 
     /**

@@ -1,11 +1,11 @@
 package seohan.ottshare.dto.userDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import seohan.ottshare.enums.BankType;
 
 @Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUpdateReq {

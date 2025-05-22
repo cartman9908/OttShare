@@ -69,7 +69,12 @@ public class OttshareRoomApiController {
 
         log.info("Room ID: {}", roomId);
 
+<<<<<<< HEAD
         OttShareRoomIdAndPasswordResponse ottShareRoomIdAndPasswordResponse = ottShareRoomService.getRoomIdAndPassword(roomId, customUserDetails.getUserId());
+=======
+        OttShareRoomIdAndPasswordResponse ottShareRoomIdAndPasswordResponse =
+                ottShareRoomService.getRoomIdAndPassword(roomId, customUserDetails.getUserId());
+>>>>>>> a9e6092 (JPA 변경감지 지연 오류 해결)
 
         return ResponseEntity.ok(ottShareRoomIdAndPasswordResponse);
     }

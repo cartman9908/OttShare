@@ -42,8 +42,9 @@ public class UserApiController {
      */
     @PostMapping("/edit")
     public ResponseEntity<?> updateUser(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                        @RequestBody UserUpdateReq updateReq) {
-        userService.updateUser(customUserDetails.getUserId(), updateReq);
+                                        @RequestBody UserUpdateReq userUpdateReq) {
+
+        userService.updateUser(customUserDetails.getUserId(), userUpdateReq);
         UserResponse updatedUser = userService.getUser(customUserDetails.getUserId());
 
         return ResponseEntity.ok(updatedUser);
@@ -54,6 +55,7 @@ public class UserApiController {
      */
     @PostMapping("/find-password")
     public ResponseEntity<Object> resetPassword(@RequestBody FindPasswordRequest dto) {
+
         UserResponse userResponse = userService.findUserForPasswordReset(dto.getUserId(), dto.getUsername());
         String temporaryPassword = PasswordGenerator.generatePassword(10);
         userService.updatePassword(userResponse.getUserId(), temporaryPassword);

@@ -10,6 +10,7 @@ import seohan.ottshare.dto.userDto.UserRequest;
 import seohan.ottshare.dto.userDto.UserResponse;
 import seohan.ottshare.dto.userDto.UserUpdateReq;
 import seohan.ottshare.entity.User;
+import seohan.ottshare.exception.UserNotFoundException;
 import seohan.ottshare.repository.UserRepository;
 
 @Service
@@ -37,7 +38,7 @@ public class UserService {
 
     public UserResponse getUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("{}" + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         return UserResponse.from(user);
     }
@@ -48,14 +49,14 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("{}" + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         userRepository.delete(user);
     }
 
     public UserResponse findUserForPasswordReset(Long userId, String username) {
         User user = userRepository.findByIdAndUsername(userId, username)
-                .orElseThrow(() -> new UsernameNotFoundException("{}" + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         return UserResponse.from(user);
     }
@@ -64,10 +65,12 @@ public class UserService {
      * user 수정
      */
     @Transactional
-    public void updateUser(Long userId, UserUpdateReq updateReq) {
+    public void updateUser(Long userId, UserUpdateReq req) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
-        user.update(updateReq.getUsername(), encoder.encode(updateReq.getPassword()), updateReq.getNickname(), user.getEmail(), user.getAccount(), user.getAccountHolder(), updateReq.getBankType());
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        req.setPassword(encoder.encode(req.getPassword()));
+        user.update(req);
     }
 
     /**
@@ -76,7 +79,7 @@ public class UserService {
     @Transactional
     public void updatePassword(Long userId, String password) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("{}" + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         user.updatePassword(encoder.encode(password));
     }
