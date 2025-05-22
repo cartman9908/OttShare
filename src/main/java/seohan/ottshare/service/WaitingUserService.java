@@ -12,6 +12,7 @@ import seohan.ottshare.entity.WaitingUser;
 import seohan.ottshare.enums.OttType;
 import seohan.ottshare.exception.NotOttLeaderException;
 import seohan.ottshare.exception.OttLeaderNotFoundException;
+import seohan.ottshare.exception.UserNotFoundException;
 import seohan.ottshare.repository.UserRepository;
 import seohan.ottshare.repository.WaitingUserRepository;
 
@@ -45,7 +46,7 @@ public class WaitingUserService {
     @Transactional
     public void deleteUser(Long id) {
         WaitingUser waitingUser = waitingUserRepository.findByUserId(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID로 사용자를 찾을 수 없습니다. " + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         waitingUserRepository.delete(waitingUser);
     }
@@ -57,7 +58,7 @@ public class WaitingUserService {
     public void deleteUsers(List<WaitingUserResponse> waitingUserResponses) {
         List<Long> ids = waitingUserResponses.stream()
                 .map(WaitingUserResponse::getId)
-                .toList();
+                .collect(Collectors.toList());
 
         waitingUserRepository.deleteByIds(ids);
     }

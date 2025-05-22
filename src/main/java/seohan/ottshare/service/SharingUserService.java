@@ -9,6 +9,8 @@ import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
 import seohan.ottshare.entity.OttShareRoom;
 import seohan.ottshare.entity.SharingUser;
+import seohan.ottshare.exception.OttShareRoomNotFoundException;
+import seohan.ottshare.exception.SharingUserNotFoundException;
 import seohan.ottshare.repository.OttShareRoomRepository;
 import seohan.ottshare.repository.SharingUserRepository;
 
@@ -43,14 +45,14 @@ public class SharingUserService {
     @Transactional
     public void assignRoomToSharingUsers(List<SharingUser> sharingUsers, OttShareRoomResponse ottShareRoomResponse) {
         OttShareRoom room = ottShareRoomRepository.findById(ottShareRoomResponse.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + ottShareRoomResponse.getId()));
+                .orElseThrow(() -> new OttShareRoomNotFoundException(ottShareRoomResponse.getId()));
 
         sharingUsers.forEach(sharingUser -> sharingUser.changeOttShareRoom(room));
     }
 
     public SharingUserResponse getSharingUser(Long userId) {
         SharingUser sharingUser = sharingUserRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new SharingUserNotFoundException(userId));
 
         return SharingUserResponse.from(sharingUser);
     }

@@ -67,7 +67,9 @@ public class OttshareRoomApiController {
         SharingUserResponse sharingUser = sharingUserService.getSharingUser(customUserDetails.getUserId());
         Long roomId = sharingUser.getOttShareRoom().getId();
 
-        OttShareRoomIdAndPasswordResponse ottShareRoomIdAndPasswordResponse = ottShareRoomService.getRoomIdAndPassword(customUserDetails.getUserId(), roomId);
+        log.info("Room ID: {}", roomId);
+
+        OttShareRoomIdAndPasswordResponse ottShareRoomIdAndPasswordResponse = ottShareRoomService.getRoomIdAndPassword(roomId, customUserDetails.getUserId());
 
         return ResponseEntity.ok(ottShareRoomIdAndPasswordResponse);
     }

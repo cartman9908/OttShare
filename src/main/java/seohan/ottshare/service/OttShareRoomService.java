@@ -10,6 +10,8 @@ import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomRequest;
 import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
 import seohan.ottshare.entity.OttShareRoom;
 import seohan.ottshare.entity.SharingUser;
+import seohan.ottshare.exception.NotFoundSharingUserForRoom;
+import seohan.ottshare.exception.SharingUserNotCheckedException;
 import seohan.ottshare.repository.OttShareRoomRepository;
 import seohan.ottshare.repository.SharingUserRepository;
 
@@ -35,6 +37,10 @@ public class OttShareRoomService {
     /**
      * ott 공유방 삭제
      */
+    @Transactional
+    public void deleteOttShareRoom(Long userId, Long roomId) {
+
+    }
 
     /**
      * ott 공유방 강제퇴장
@@ -42,7 +48,7 @@ public class OttShareRoomService {
     @Transactional
     public void kickFromRoom(Long roomId, Long userId) {
         SharingUser sharingUser = sharingUserRepository.findByRoomIdAndUserId(roomId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("공유방에 해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundSharingUserForRoom(roomId, userId));
 
         OttShareRoom ottShareRoom = sharingUser.getOttShareRoom();
 
@@ -60,7 +66,7 @@ public class OttShareRoomService {
     @Transactional
     public void updateCheckStatus(Long roomId, Long userId) {
         SharingUser sharingUser = sharingUserRepository.findByRoomIdAndUserId(roomId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("공유방에 해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundSharingUserForRoom(roomId, userId));
 
         sharingUser.setChecked();
         log.info("Checked user with ID: {} in room ID: {}", userId, roomId);
@@ -70,13 +76,14 @@ public class OttShareRoomService {
      * 아이디, 비밀번호 확인
      */
     public OttShareRoomIdAndPasswordResponse getRoomIdAndPassword(Long roomId, Long userId) {
+
         SharingUser sharingUser = sharingUserRepository.findByRoomIdAndUserId(roomId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("공유방에 해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundSharingUserForRoom(roomId, userId));
 
         OttShareRoom ottShareRoom = sharingUser.getOttShareRoom();
 
         if(!sharingUser.isChecked()) {
-            throw new IllegalArgumentException("해당 유저는 확정짓지 않음");
+            throw new SharingUserNotCheckedException(userId);
         }
 
         return new OttShareRoomIdAndPasswordResponse(ottShareRoom.getOttId(), ottShareRoom.getOttPassword());
