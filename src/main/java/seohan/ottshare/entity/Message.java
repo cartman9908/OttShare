@@ -2,11 +2,16 @@ package seohan.ottshare.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import seohan.ottshare.dto.message.MessageRequest;
+import seohan.ottshare.dto.message.MessageResponse;
+import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "message")
@@ -27,4 +32,12 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ott_share_room_id")
     private OttShareRoom ottShareRoom;
+
+    public static Message from(MessageResponse response) {
+        return Message.builder()
+                .message(response.getMessage())
+                .sharingUser(response.getSharingUser())
+                .ottShareRoom(response.getOttShareRoom())
+                .build();
+    }
 }
