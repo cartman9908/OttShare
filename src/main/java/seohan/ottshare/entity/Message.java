@@ -33,11 +33,11 @@ public class Message {
     @JoinColumn(name = "ott_share_room_id")
     private OttShareRoom ottShareRoom;
 
-    public static Message from(MessageResponse response) {
+    public static Message from(SharingUser sharingUser, OttShareRoom ottShareRoom, String message) {
         return Message.builder()
-                .message(response.getMessage())
-                .sharingUser(response.getSharingUser())
-                .ottShareRoom(response.getOttShareRoom())
+                .message(message)
+                .sharingUser(sharingUser)
+                .ottShareRoom(ottShareRoom)
                 .build();
     }
 }

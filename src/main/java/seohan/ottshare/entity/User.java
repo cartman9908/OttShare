@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import seohan.ottshare.dto.userDto.SocialUserRequest;
 import seohan.ottshare.dto.userDto.UserRequest;
+import seohan.ottshare.dto.userDto.UserUpdateReq;
 import seohan.ottshare.enums.BankType;
 import seohan.ottshare.enums.Role;
 
@@ -85,14 +86,14 @@ public class User extends BaseTimeEntity{
                 .build();
     }
 
-    public void update(String username, String password, String nickname, String email, String account, String accountHolder, BankType bankType) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.email = email;
-        this.account = account;
-        this.accountHolder = accountHolder;
-        this.bankType = bankType;
+    public void update(UserUpdateReq req) {
+        this.username = req.getUsername();
+        this.password = req.getPassword();
+        this.nickname = req.getNickname();
+        this.email = req.getEmail();
+        this.account = req.getAccount();
+        this.accountHolder = req.getAccountHolder();
+        this.bankType = req.getBankType();
     }
 
     public void updatePassword(String password) {

@@ -50,16 +50,6 @@ public class SharingUser extends BaseTimeEntity{
                 .build();
     }
 
-    public static SharingUser from(SharingUserResponse response) {
-        return SharingUser.builder()
-                .id(response.getId())
-                .user(User.from(response.getUser()))
-                .ottShareRoom(OttShareRoom.from(response.getOttShareRoom()))
-                .isLeader(response.isLeader())
-                .isChecked(response.isChecked())
-                .build();
-    }
-
     public void changeOttShareRoom(OttShareRoom ottShareRoom) {
         this.ottShareRoom = ottShareRoom;
     }

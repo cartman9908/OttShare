@@ -40,22 +40,25 @@ public class RabbitMqService {
 
     @Transactional
     public MessageResponse createMessage(MessageRequest dto) {
+
         SharingUser sharingUser = sharingUserRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new SharingUserNotFoundException(dto.getUserId()));
 
         OttShareRoom ottShareRoom = ottShareRoomRepository.findById(dto.getRoomId())
                 .orElseThrow(() -> new OttShareRoomNotFoundException(dto.getRoomId()));
 
-        return new MessageResponse(ottShareRoom, sharingUser, dto.getMessage());
+        Message message = Message.from(sharingUser, ottShareRoom, dto.getMessage());
+
+        messageRepository.save(message);
+
+        return MessageResponse.from(message);
     }
 
     @Transactional
     public void sendMessage(MessageResponse dto) {
 
-        Message message = Message.from(dto);
-        messageRepository.save(message);
+        routingKey = "room." + dto.getOttShareRoomResponse().getId();
 
-        routingKey = "room." + dto.getOttShareRoom().getId();
         this.rabbitTemplate.convertAndSend(exchangeName, routingKey, dto);
         log.info("message send : {}", dto.getMessage());
     }
@@ -64,7 +67,7 @@ public class RabbitMqService {
     public void receiveMessage(MessageResponse dto) {
         log.info("Received message : {}", dto.toString());
 
-        String topic = "/topic/room/" + dto.getOttShareRoom().getId();
+        String topic = "/topic/room/" + dto.getOttShareRoomResponse().getId();
         messagingTemplate.convertAndSend(topic, dto);
     }
 }
