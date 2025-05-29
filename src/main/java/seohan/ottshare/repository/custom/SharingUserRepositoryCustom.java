@@ -12,4 +12,6 @@ public interface SharingUserRepositoryCustom {
     Optional<SharingUser> findByRoomIdAndUserId(Long roomId, Long userId);
 
     Optional<SharingUser> findByUserId(Long userId);
+
+    void deleteByOttShareId(Long roomId);
 }

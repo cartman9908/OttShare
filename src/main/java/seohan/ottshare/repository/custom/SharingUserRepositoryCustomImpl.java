@@ -15,6 +15,7 @@ import static seohan.ottshare.entity.QSharingUser.sharingUser;
 public class SharingUserRepositoryCustomImpl implements SharingUserRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<SharingUser> findByIds(List<Long> sharingUserIds) {
@@ -43,5 +44,12 @@ public class SharingUserRepositoryCustomImpl implements SharingUserRepositoryCus
                 .where(sharingUser.user.id.eq(userId))
                 .fetchOne()
         );
+    }
+
+    @Override
+    public void deleteByOttShareId(Long roomId) {
+        jpaQueryFactory.delete(sharingUser)
+                .where(sharingUser.ottShareRoom.id.eq(roomId))
+                .execute();
     }
 }

@@ -11,8 +11,11 @@ import seohan.ottshare.dto.ottShareRoomDto.OttShareRoomResponse;
 import seohan.ottshare.dto.sharingUserDto.SharingUserResponse;
 import seohan.ottshare.entity.OttShareRoom;
 import seohan.ottshare.entity.SharingUser;
+import seohan.ottshare.entity.User;
 import seohan.ottshare.exception.NotFoundSharingUserForRoom;
+import seohan.ottshare.exception.OttShareRoomNotFoundException;
 import seohan.ottshare.exception.SharingUserNotCheckedException;
+import seohan.ottshare.repository.MessageRepository;
 import seohan.ottshare.repository.OttShareRoomRepository;
 import seohan.ottshare.repository.SharingUserRepository;
 
@@ -24,7 +27,7 @@ public class OttShareRoomService {
 
     private final OttShareRoomRepository ottShareRoomRepository;
     private final SharingUserRepository sharingUserRepository;
-    private final EntityManager entityManager;
+    private final MessageRepository messageRepository;
 
     /**
      * ott 공유방 생성
@@ -39,8 +42,20 @@ public class OttShareRoomService {
      * ott 공유방 삭제
      */
     @Transactional
-    public void deleteOttShareRoom(Long userId, Long roomId) {
+    public void deleteOttShareRoom(Long roomId) {
+        OttShareRoom ottShareRoom = ottShareRoomRepository.findById(roomId)
+                .orElseThrow(() -> new OttShareRoomNotFoundException(roomId));
 
+        ottShareRoom.getSharingUsers().stream()
+                .map(SharingUser::getUser)
+                .forEach(User::leaveShareRoom);
+
+        messageRepository.deleteByOttShareId(roomId);
+
+        sharingUserRepository.deleteByOttShareId(roomId);
+
+        ottShareRoomRepository.delete(ottShareRoom);
+        log.info("delete OttShareRoom with ID: {}", roomId);
     }
 
     /**
@@ -55,6 +70,21 @@ public class OttShareRoomService {
         OttShareRoom ottShareRoom = sharingUser.getOttShareRoom();
 
         ottShareRoom.removeSharingUser(sharingUser);
+
+        log.info("Kick room {} from user {}", roomId, userId);
+    }
+
+    @Transactional
+    public void leaveRoom(Long roomId, Long userId) {
+        SharingUser sharingUser = sharingUserRepository.findByRoomIdAndUserId(roomId, userId)
+                .orElseThrow(() -> new NotFoundSharingUserForRoom(roomId, userId));
+
+        sharingUser.getUser().leaveShareRoom();
+
+        OttShareRoom ottShareRoom = sharingUser.getOttShareRoom();
+        ottShareRoom.removeSharingUser(sharingUser);
+
+        log.info("Leave room {} from user {}", roomId, userId);
     }
 
     /**

@@ -43,13 +43,28 @@ public class OttshareRoomApiController {
     /**
      * 스스로 채팅방 나가기
      */
+    @PostMapping("/self-leave")
+    public ResponseEntity<String> leaveRoom(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        SharingUserResponse sharingUser = sharingUserService.getSharingUser(customUserDetails.getUserId());
+
+        Long roomId = sharingUser.getOttShareRoom().getId();
+
+        if (sharingUser.isLeader()) {
+            ottShareRoomService.deleteOttShareRoom(roomId);
+        } else {
+          ottShareRoomService.leaveRoom(roomId, customUserDetails.getUserId());
+        }
+
+        return ResponseEntity.ok("User successfully leaved from room");
+    }
 
     /**
      * 체크
      */
     @PostMapping("/{roomId}/user/{userId}/check")
     public ResponseEntity<String> checkUserInRoom(@PathVariable Long roomId
-                                                , @PathVariable Long userId) {
+            , @PathVariable Long userId) {
 
         log.info("Checking user ID: {} in room ID: {}", userId, roomId);
         ottShareRoomService.updateCheckStatus(roomId, userId);

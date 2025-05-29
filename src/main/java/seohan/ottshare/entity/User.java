@@ -107,4 +107,8 @@ public class User extends BaseTimeEntity{
     public void kickShareRoom() {
         this.isShareRoom = false;
     }
+
+    public void leaveShareRoom() {
+        this.isShareRoom = false;
+    }
 }
