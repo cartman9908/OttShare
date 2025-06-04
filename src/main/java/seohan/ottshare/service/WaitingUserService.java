@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import seohan.ottshare.aop.DistributedLock;
 import seohan.ottshare.dto.waitingUserDto.IsLeaderAndOttResponse;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserReq;
 import seohan.ottshare.dto.waitingUserDto.WaitingUserResponse;
@@ -31,6 +32,7 @@ public class WaitingUserService {
     /**
      * user 저장
      */
+    @DistributedLock(key = "#waitingUserReq.userInfo.username")
     @Transactional
     public void createWaitingUser(WaitingUserReq waitingUserReq) {
         User user = userRepository.findByUsername(waitingUserReq.getUserInfo().getUsername())

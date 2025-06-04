@@ -59,4 +59,18 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(e.getMessage(), 404);
         return ResponseEntity.status(404).body(response);
     }
+
+    @ExceptionHandler(LockAcquisitionException.class)
+    public ResponseEntity<ErrorResponse> handleLockAcquisitionException(LockAcquisitionException e) {
+        log.warn("Lock Acquisition : {}", e.getMessage());
+        ErrorResponse response = new ErrorResponse(e.getMessage(), 404);
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @ExceptionHandler(LockInterruptedException.class)
+    public ResponseEntity<ErrorResponse> handleLockInterruptedException(LockInterruptedException e) {
+        log.warn("Lock InterruptedException : {}", e.getMessage());
+        ErrorResponse response = new ErrorResponse(e.getMessage(), 404);
+        return ResponseEntity.status(404).body(response);
+    }
 }
