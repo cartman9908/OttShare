@@ -25,7 +25,7 @@ WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 
 # 컨테이너 외부 노출 포트
-EXPOSE 8080
+EXPOSE 8081
 
 # 실행 명령
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
