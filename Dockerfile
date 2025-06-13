@@ -22,7 +22,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # 빌드된 JAR 복사
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/ottShare-0.0.1-SNAPSHOT.jar app.jar
 
 # 컨테이너 외부 노출 포트
 EXPOSE 8081
