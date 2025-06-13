@@ -20,8 +20,6 @@ spring:
     username: ${APP_RABBITMQ_USER}
     password: ${APP_RABBITMQ_PASS}
 
-
-
 rabbitmq:
   exchange:
     name: ${APP_RABBITMQ_EXCHANGE_NAME}

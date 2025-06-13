@@ -7,21 +7,24 @@ services:
     env_file:
       - .env
     depends_on:
-      - mysql
-      - redis
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      mysql-container:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - app-network
-    restart: on-failure
 
   mysql:
     image: mysql/mysql-server:8.0
     container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: Kang@2516
-      MYSQL_DATABASE: ottshare
+      MYSQL_ROOT_PASSWORD: ${APP_DB_USERNAME}
+      MYSQL_DATABASE: ${APP_DB_PASSWORD}
     ports:
       - "3306:3306"
+    restart: always
     networks:
       - app-network
     volumes:
@@ -30,9 +33,9 @@ services:
       - .env
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
 
   redis:
     image: redis:latest
@@ -43,6 +46,12 @@ services:
       - app-network
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -51,12 +60,17 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${APP_RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${APP_RABBITMQ_PASS}
     networks:
       - app-network
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   app-network:
