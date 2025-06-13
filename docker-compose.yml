@@ -7,14 +7,12 @@ services:
     env_file:
       - .env
     depends_on:
-      mysql:
-        condition: service_healthy
-        redis:
-          condition: service_started
-        rabbitmq:
-          condition: service_started
+      - mysql
+      - redis
+      - rabbitmq
     networks:
       - app-network
+    restart: on-failure
 
   mysql:
     image: mysql/mysql-server:8.0
