@@ -39,7 +39,7 @@ services:
       - .env
 
   app:
-    image: ottshare-image:latest
+    image: seohan02/ottshare:latest
     container_name: ottshare-container
     ports:
       - "8081:8080"
