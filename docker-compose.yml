@@ -9,7 +9,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      mysql-container:
+      mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -20,8 +20,8 @@ services:
     image: mysql/mysql-server:8.0
     container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: ${APP_DB_USERNAME}
-      MYSQL_DATABASE: ${APP_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: Kang@2516
+      MYSQL_DATABASE: ottshare
     ports:
       - "3306:3306"
     restart: always
@@ -52,7 +52,6 @@ services:
       timeout: 5s
       retries: 5
 
-
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq-container
@@ -60,8 +59,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: ${APP_RABBITMQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${APP_RABBITMQ_PASS}
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     networks:
       - app-network
     env_file:
