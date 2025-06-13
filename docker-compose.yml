@@ -1,4 +1,21 @@
 services:
+  app:
+    image: seohan02/ottshare:latest
+    container_name: ottshare-container
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+        redis:
+          condition: service_started
+        rabbitmq:
+          condition: service_started
+    networks:
+      - app-network
+      -
   mysql:
     image: mysql/mysql-server:8.0
     container_name: mysql-container
@@ -13,6 +30,11 @@ services:
       - mysql-data:/var/lib/mysql
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: redis:latest
@@ -37,20 +59,6 @@ services:
       - app-network
     env_file:
       - .env
-
-  app:
-    image: seohan02/ottshare:latest
-    container_name: ottshare-container
-    ports:
-      - "8081:8080"
-    env_file:
-      - .env
-    networks:
-      - app-network
-    depends_on:
-      - mysql
-      - redis
-      - rabbitmq
 
 networks:
   app-network:
