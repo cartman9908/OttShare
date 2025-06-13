@@ -1,5 +1,9 @@
 spring:
   datasource:
+    hikari:
+      initialization-fail-timeout: 0
+      connection-timeout: 30000
+
     url: ${APP_DB_URL}
     username: ${APP_DB_USERNAME}
     password: ${APP_DB_PASSWORD}
@@ -15,6 +19,8 @@ spring:
     port: ${APP_RABBITMQ_PORT}
     username: ${APP_RABBITMQ_USER}
     password: ${APP_RABBITMQ_PASS}
+
+
 
 rabbitmq:
   exchange:
