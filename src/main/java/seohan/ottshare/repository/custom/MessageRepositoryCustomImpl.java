@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import seohan.ottshare.entity.QMessage;
 
+
 @Repository
 @RequiredArgsConstructor
 public class MessageRepositoryCustomImpl implements MessageRepositoryCustom {

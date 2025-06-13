@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: ${APP_DB_URL}
+    username: ${APP_DB_USERNAME}
+    password: ${APP_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    redis:
+      host: ${APP_REDIS_HOST}
+      port: ${APP_REDIS_PORT}
+
+  rabbitmq:
+    host: ${APP_RABBITMQ_HOST}
+    port: ${APP_RABBITMQ_PORT}
+    username: ${APP_RABBITMQ_USER}
+    password: ${APP_RABBITMQ_PASS}
+
+rabbitmq:
+  exchange:
+    name: ${APP_RABBITMQ_EXCHANGE_NAME}
+  queue:
+    name: chat.user.{userId}
+  routing:
+    key: room.{roomId}

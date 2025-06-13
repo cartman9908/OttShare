@@ -24,10 +24,6 @@ public class OttshareRoomApiController {
     private final SharingUserService sharingUserService;
 
     /**
-     * 채팅방
-     */
-
-    /**
      * 강제퇴장
      */
     @PostMapping("/rooms/{roomId}/user/{userId}")
