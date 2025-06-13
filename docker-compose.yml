@@ -15,7 +15,7 @@ services:
           condition: service_started
     networks:
       - app-network
-      -
+
   mysql:
     image: mysql/mysql-server:8.0
     container_name: mysql-container
