@@ -16,6 +16,14 @@ spring:
     username: ${APP_RABBITMQ_USER}
     password: ${APP_RABBITMQ_PASS}
 
+  messaging:
+    stomp:
+      relay:
+        host: ${APP_STOMP_RELAY_HOST}
+        port: ${APP_STOMP_RELAY_PORT}
+        login: ${APP_STOMP_RELAY_LOGIN}
+        passcode: ${APP_STOMP_RELAY_PASSCODE}
+
 rabbitmq:
   exchange:
     name: ${APP_RABBITMQ_EXCHANGE_NAME}
