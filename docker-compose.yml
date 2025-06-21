@@ -67,8 +67,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./rabbitmq/init.sh:/usr/local/bin/init.sh
-    command: ["bash", "/usr/local/bin/init.sh"]
+      - ./rabbitmq/init.sh:/init.sh
+    command: [ "bash", "/init.sh" ]
     healthcheck:
       test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping || exit 1" ]
       interval: 10s
