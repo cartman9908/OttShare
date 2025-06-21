@@ -27,5 +27,5 @@ COPY --from=build /app/build/libs/ottShare-0.0.1-SNAPSHOT.jar app.jar
 # 컨테이너 외부 노출 포트
 EXPOSE 8081
 
-# 실행 명령
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# 실행 명령 (JVM 힙 메모리 제한 추가)
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-jar", "/app/app.jar"]
